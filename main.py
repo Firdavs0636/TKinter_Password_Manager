@@ -1,34 +1,28 @@
 from tkinter import *
 from tkinter import messagebox
-import random
+from random import choice, randint, shuffle
+import pyperclip
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
-letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+def generate_password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+    password_list = []
+    # Takes random number of letters, characters and numbers from the lists above and assigns to a new list
+    password_list += [choice(letters) for a in range(randint(8, 10))]
+    password_list += [choice(symbols) for b in range(randint(2, 4))]
+    password_list += [choice(numbers) for c in range(randint(2, 4))]
+    # Shuffles the assigned string from a list
+    shuffle(password_list)
+    # Assigns shuffled string to a new variable without any space or braces
+    password = "".join(password_list)
+    # Inserts a password inside a password entry
+    password_input.insert(0, password)
+    # COPIES the password to a clipboard that is easy to PASTE
+    pyperclip.copy(password)
 
-nr_letters = random.randint(8, 10)
-nr_symbols = random.randint(2, 4)
-nr_numbers = random.randint(2, 4)
 
-password_list = []
-
-for char in range(nr_letters):
-  password_list.append(random.choice(letters))
-
-for char in range(nr_symbols):
-  password_list += random.choice(symbols)
-
-for char in range(nr_numbers):
-  password_list += random.choice(numbers)
-
-random.shuffle(password_list)
-
-password = ""
-for char in password_list:
-  password += char
-
-print(f"Your password is: {password}")
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
     website = website_input.get()
@@ -92,7 +86,7 @@ password_input.grid(column=1, row=3)
 
 
 # Buttons
-generate_bt = Button(text='Generate Password')
+generate_bt = Button(text='Generate Password', command=generate_password)
 generate_bt.grid(column=2, row=3)
 
 
