@@ -17,21 +17,27 @@ def generate_password():
     shuffle(password_list)
     # Assigns shuffled string to a new variable without any space or braces
     password = "".join(password_list)
+    # Clears everything inside password entry
+    password_input.delete(0, END)
+    re_entry_password_input.delete(0, END)
     # Inserts a password inside a password entry
     password_input.insert(0, password)
+    re_entry_password_input.insert(0, password)
     # COPIES the password to a clipboard that is easy to PASTE
     pyperclip.copy(password)
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
+    # Gets variables from Entries
     website = website_input.get()
     email = email_username_input.get()
     password = password_input.get()
 
     if len(website) == 0 or len(password) == 0 or len(email) == 0:
         messagebox.showwarning(title="Oops!", message="You're missing some values!")
-
+    elif check_password():
+        messagebox.showwarning(title="WARNING!", message="Your password is not compatible!")
     else:
         is_ok = messagebox.askokcancel(title=website, message=f'Information details: \nEmail: {email} \nPassword: {password} '
                                                               f'\nPress OK if you want to save!')
@@ -41,8 +47,13 @@ def save():
                 file.write(f'{website} | {email} | {password}\n')
             website_input.delete(0, END)
             password_input.delete(0, END)
+            re_entry_password_input.delete(0, END)
 
 
+# ---------------------------- CHECK PASSWORD COMPATIBILITY  ------------------------------- #
+def check_password():
+    if password_input.get() != re_entry_password_input.get():
+        return True
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -65,9 +76,13 @@ website_label.grid(column=0, row=1)
 email_username_label = Label(text='Email/Username:')
 email_username_label.grid(column=0, row=2)
 
-
+# First password entry
 password_label = Label(text='Password:')
 password_label.grid(column=0, row=3)
+
+# Second password entry
+password_label = Label(text='Re-enter the Password:')
+password_label.grid(column=0, row=4)
 
 
 # Input Entry
@@ -80,9 +95,13 @@ email_username_input = Entry(width=39)
 email_username_input.grid(column=1, row=2, columnspan=2)
 email_username_input.insert(END, 'example@mail.com')
 
-
+# First password entry
 password_input = Entry(width=21, textvariable='Password', show='*')
 password_input.grid(column=1, row=3)
+
+# Second password entry
+re_entry_password_input = Entry(width=21, textvariable='Re-enter Password', show='*')
+re_entry_password_input.grid(column=1, row=4)
 
 
 # Buttons
@@ -91,7 +110,7 @@ generate_bt.grid(column=2, row=3)
 
 
 add_bt = Button(text='Add', width=37, command=save)
-add_bt.grid(column=1, row=4, columnspan=2)
+add_bt.grid(column=1, row=5, columnspan=2)
 
 
 
