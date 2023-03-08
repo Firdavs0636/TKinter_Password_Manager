@@ -1,7 +1,9 @@
+import json
 from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
+
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
@@ -67,7 +69,6 @@ def save():
             re_entry_password_input.delete(0, END)
 
 
-
 # ---------------------------- CHECK PASSWORD COMPATIBILITY  ------------------------------- #
 def check_password():
     if password_input.get() != re_entry_password_input.get():
@@ -82,57 +83,49 @@ window.config(padx=50, pady=50)
 
 # Canvas, Photo Setup
 canvas = Canvas(width=200, height=200, highlightthickness=0)
-image1 = PhotoImage(file='/Users/admin/PycharmProjects/TKinter_Password_Manager/Pics/logo.png')
+image1 = PhotoImage(file='/home/friend/PycharmProjects/pythonProject/Pics/logo.png')
 canvas.create_image(100, 100, image=image1)
 canvas.grid(column=1, row=0)
 
 # Label Setup
 website_label = Label(text='Website:')
-website_label.grid(column=0, row=1)
-
+website_label.grid(column=0, row=1, sticky=W)
 
 email_username_label = Label(text='Email/Username:')
-email_username_label.grid(column=0, row=2)
+email_username_label.grid(column=0, row=2, sticky=W)
 
-# First password entry
-password_label = Label(text='Password:')
-password_label.grid(column=0, row=3)
+first_password_label = Label(text='Password:')
+first_password_label.grid(column=0, row=3, sticky=W)
 
-# Second password entry
-password_label = Label(text='Re-enter the Password:')
-password_label.grid(column=0, row=4)
+second_password_label = Label(text='Re-enter the Password:')
+second_password_label.grid(column=0, row=4, sticky=W)
 
 
 # Input Entry
-website_input = Entry(width=39)
-website_input.grid(column=1, row=1, columnspan=2)
+website_input = Entry(width=21)
+website_input.grid(column=1, row=1)
 website_input.focus()
-
 
 email_username_input = Entry(width=39)
 email_username_input.grid(column=1, row=2, columnspan=2)
 email_username_input.insert(END, 'example@mail.com')
 
-# First password entry
 password_input = Entry(width=21, textvariable='Password', show='*')
 password_input.grid(column=1, row=3)
 
-# Second password entry
 re_entry_password_input = Entry(width=21, textvariable='Re-enter Password', show='*')
 re_entry_password_input.grid(column=1, row=4)
 
 
 # Buttons
+search_bt = Button(text='Search', command=None)
+search_bt.grid(column=2, row=1)
+
 generate_bt = Button(text='Generate Password', command=generate_password)
 generate_bt.grid(column=2, row=3)
 
-
 add_bt = Button(text='Add', width=37, command=save)
 add_bt.grid(column=1, row=5, columnspan=2)
-
-
-
-
 
 
 window.mainloop()
