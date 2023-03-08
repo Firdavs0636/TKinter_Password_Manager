@@ -33,6 +33,12 @@ def save():
     website = website_input.get()
     email = email_username_input.get()
     password = password_input.get()
+    new_data = {
+    				website: {
+                		'email': email
+                    	'password': password
+                        }
+                    }
 
     if len(website) == 0 or len(password) == 0 or len(email) == 0:
         messagebox.showwarning(title="Oops!", message="You're missing some values!")
@@ -43,8 +49,9 @@ def save():
                                                               f'\nPress OK if you want to save!')
 
         if is_ok:
-            with open("passwords.txt", mode='a') as file:
-                file.write(f'{website} | {email} | {password}\n')
+            with open("passwords.json", mode='r') as file:
+            	old_data = json.load(file)
+            	old_data.update(
             website_input.delete(0, END)
             password_input.delete(0, END)
             re_entry_password_input.delete(0, END)
