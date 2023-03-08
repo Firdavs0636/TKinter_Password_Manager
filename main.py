@@ -34,27 +34,38 @@ def save():
     email = email_username_input.get()
     password = password_input.get()
     new_data = {
-    				website: {
-                		'email': email
-                    	'password': password
-                        }
-                    }
+        website:
+            {
+                'email': email,
+                'password': password
+            }
+    }
 
     if len(website) == 0 or len(password) == 0 or len(email) == 0:
         messagebox.showwarning(title="Oops!", message="You're missing some values!")
     elif check_password():
         messagebox.showwarning(title="WARNING!", message="Your password is not compatible!")
     else:
-        is_ok = messagebox.askokcancel(title=website, message=f'Information details: \nEmail: {email} \nPassword: {password} '
-                                                              f'\nPress OK if you want to save!')
-
-        if is_ok:
+        try:
             with open("passwords.json", mode='r') as file:
-            	old_data = json.load(file)
-            	old_data.update(
+                # Reads old data and saves as a dictionary
+                updated = json.load(file)
+        except FileNotFoundError:
+            with open("passwords.json", mode='w') as file:
+                # Writes an updated data
+                json.dump(new_data, file, indent=4)
+        else:
+            # Updates an old data
+            updated.update(new_data)
+
+            with open("passwords.json", mode='w') as file:
+                # Writes an updated data
+                json.dump(updated, file, indent=4)
+        finally:
             website_input.delete(0, END)
             password_input.delete(0, END)
             re_entry_password_input.delete(0, END)
+
 
 
 # ---------------------------- CHECK PASSWORD COMPATIBILITY  ------------------------------- #
